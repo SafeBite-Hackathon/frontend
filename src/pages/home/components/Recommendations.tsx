@@ -11,10 +11,18 @@ import {
 import { FaArrowRightLong } from "react-icons/fa6";
 import { Fragment } from "react/jsx-runtime";
 import { LuHeart } from "react-icons/lu";
+import RecipeDetailsView from "@/views/RecipeDetailsView";
+import { useBoolean } from "usehooks-ts";
 
 const Recommendations = () => {
+  const isRecipeDetailsOpen = useBoolean(false);
+
   return (
     <Fragment>
+      <RecipeDetailsView
+        isOpen={isRecipeDetailsOpen.value}
+        onClose={isRecipeDetailsOpen.setFalse}
+      />
       <HStack justifyContent={"space-between"} mb={2}>
         <Text fontWeight={"semibold"}>Rich in protein recipes</Text>
 
@@ -27,8 +35,8 @@ const Recommendations = () => {
       </HStack>
 
       <Grid templateColumns={"repeat(2, 1fr)"} gap={4}>
-        <FoodCard />
-        <FoodCard />
+        <FoodCard onClick={isRecipeDetailsOpen.setTrue} />
+        <FoodCard onClick={isRecipeDetailsOpen.setTrue} />
       </Grid>
     </Fragment>
   );
@@ -36,10 +44,12 @@ const Recommendations = () => {
 
 export default Recommendations;
 
-const FoodCard = () => {
+const FoodCard = (props: { onClick: VoidFunction }) => {
+  const { onClick } = props;
+
   return (
     <VStack gap={2}>
-      <Box position={"relative"} w={"full"}>
+      <Box position={"relative"} w={"full"} onClick={onClick}>
         <Image rounded={"lg"} src="/images/dinner.jpg" w={"full"} h={"100px"} />
         <IconButton
           variant={"subtle"}
