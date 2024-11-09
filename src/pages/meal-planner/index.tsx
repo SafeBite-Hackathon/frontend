@@ -13,10 +13,18 @@ import { FaChevronRight } from "react-icons/fa6";
 import Recommended from "./components/Recommended";
 import BrowseAll from "./components/BrowseAll";
 import { BiPlus } from "react-icons/bi";
+import CreateMealPlan from "./views/CreateMealPlan";
+import { useBoolean } from "usehooks-ts";
 
 const MealPlannerPage = () => {
+  const isCreatePlanView = useBoolean(false);
+
   return (
     <Box px={4} py={4}>
+      <CreateMealPlan
+        isOpen={isCreatePlanView.value}
+        onClose={isCreatePlanView.setFalse}
+      />
       <Heading fontWeight={"bold"} fontFamily={"Work Sans"} mb={4}>
         Meal planner
       </Heading>
@@ -60,6 +68,7 @@ const MealPlannerPage = () => {
           rounded="lg"
           overflow="hidden"
           justifyContent={"center"}
+          onClick={isCreatePlanView.setTrue}
         >
           <Image
             position={"absolute"}

@@ -1,11 +1,14 @@
 import { RouterProvider } from "react-router-dom";
 import { router } from "./config/router";
 import Providers from "./providers";
+import { Container } from "@chakra-ui/react";
 
 function App() {
   return (
     <Providers>
-      <RouterProvider router={router} />
+      <Container maxW={"620px"}>
+        <RouterProvider router={router} />
+      </Container>
     </Providers>
   );
 }

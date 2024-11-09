@@ -5,9 +5,16 @@ import { useSwipeable } from "react-swipeable";
 interface SwipableDeleteProps {
   children: React.ReactNode;
   onDelete: VoidFunction;
+  isDeleteDisabled?: boolean;
+  onClick?: VoidFunction;
 }
 
-const SwipableDeleteCard = ({ children, onDelete }: SwipableDeleteProps) => {
+const SwipableDeleteCard = ({
+  children,
+  onDelete,
+  isDeleteDisabled,
+  onClick,
+}: SwipableDeleteProps) => {
   const [showDelete, setShowDelete] = useState(false);
 
   const swipeHandlers = useSwipeable({
@@ -16,10 +23,12 @@ const SwipableDeleteCard = ({ children, onDelete }: SwipableDeleteProps) => {
     preventScrollOnSwipe: true,
   });
 
+  const handlers = isDeleteDisabled ? {} : swipeHandlers;
+
   return (
-    <Box>
-      <Box position={"relative"} {...swipeHandlers}>
-        {showDelete ? (
+    <Box onClick={onClick}>
+      <Box position={"relative"} {...handlers}>
+        {showDelete && !isDeleteDisabled ? (
           <Box
             position="absolute"
             left="0"
