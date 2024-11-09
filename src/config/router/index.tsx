@@ -4,6 +4,7 @@ import OnboardingPage from "@/pages/onboarding";
 import DefaultLayout from "@/layouts/defaultLayout";
 import WithNavigation from "@/widgets/NavigationMenu/WithNavigation";
 import ProfilePage from "@/pages/profile";
+import MealPlannerPage from "@/pages/meal-planner";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,14 @@ export const router = createBrowserRouter([
         element: (
           <WithNavigation activeTab="profile">
             <ProfilePage />
+          </WithNavigation>
+        ),
+      },
+      {
+        path: "/mealPlanner",
+        element: (
+          <WithNavigation activeTab="mealPlanner">
+            <MealPlannerPage />
           </WithNavigation>
         ),
       },

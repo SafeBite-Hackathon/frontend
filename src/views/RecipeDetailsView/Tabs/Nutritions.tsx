@@ -46,6 +46,33 @@ const Nutritions = () => {
           </Text>
         </VStack>
       </HStack>
+      <Box spaceY={4}>
+        <Text fontWeight={"medium"}>Nutrition: per serving (250g)</Text>
+        <HStack justifyContent={"space-between"}>
+          <Text>Protein</Text>
+          <Text fontWeight={"bold"}>6g</Text>
+        </HStack>
+        <HStack justifyContent={"space-between"}>
+          <Text>Carbs</Text>
+          <Text fontWeight={"bold"}>20g</Text>
+        </HStack>
+        <HStack justifyContent={"space-between"}>
+          <Text>Fat</Text>
+          <Text fontWeight={"bold"}>24g</Text>
+        </HStack>
+        <HStack justifyContent={"space-between"}>
+          <Text>Sugars</Text>
+          <Text fontWeight={"bold"}>6g</Text>
+        </HStack>
+        <HStack justifyContent={"space-between"}>
+          <Text>Fibre</Text>
+          <Text fontWeight={"bold"}>0g</Text>
+        </HStack>
+        <HStack justifyContent={"space-between"}>
+          <Text>Salt</Text>
+          <Text fontWeight={"bold"}>0.54g</Text>
+        </HStack>
+      </Box>
     </Box>
   );
 };

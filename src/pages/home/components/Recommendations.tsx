@@ -35,8 +35,8 @@ const Recommendations = () => {
       </HStack>
 
       <Grid templateColumns={"repeat(2, 1fr)"} gap={4}>
-        <FoodCard onClick={isRecipeDetailsOpen.setTrue} />
-        <FoodCard onClick={isRecipeDetailsOpen.setTrue} />
+        <RecipeCard onClick={isRecipeDetailsOpen.setTrue} />
+        <RecipeCard onClick={isRecipeDetailsOpen.setTrue} />
       </Grid>
     </Fragment>
   );
@@ -44,7 +44,7 @@ const Recommendations = () => {
 
 export default Recommendations;
 
-const FoodCard = (props: { onClick: VoidFunction }) => {
+export const RecipeCard = (props: { onClick: VoidFunction }) => {
   const { onClick } = props;
 
   return (

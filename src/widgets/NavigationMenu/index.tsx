@@ -33,18 +33,20 @@ const NavigationMenu: FC<{ activeTab: string }> = ({ activeTab }) => {
             />
           </Center>
         </Link>
-        <Center
-          mx={"auto"}
-          w={12}
-          h={12}
-          bg={activeTab === "mealPlanner" ? "green.200" : "transparent"}
-          rounded={"full"}
-        >
-          <MdMenuBook
-            size={24}
-            color={activeTab === "mealPlanner" ? "#22c55e" : "484C52"}
-          />
-        </Center>
+        <Link to={"/mealPlanner"}>
+          <Center
+            mx={"auto"}
+            w={12}
+            h={12}
+            bg={activeTab === "mealPlanner" ? "green.200" : "transparent"}
+            rounded={"full"}
+          >
+            <MdMenuBook
+              size={24}
+              color={activeTab === "mealPlanner" ? "#22c55e" : "484C52"}
+            />
+          </Center>
+        </Link>
         <Center
           mx={"auto"}
           w={12}
