@@ -5,6 +5,7 @@ import DefaultLayout from "@/layouts/defaultLayout";
 import WithNavigation from "@/widgets/NavigationMenu/WithNavigation";
 import ProfilePage from "@/pages/profile";
 import MealPlannerPage from "@/pages/meal-planner";
+import ShoppingListPage from "@/pages/shopping-list";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,14 @@ export const router = createBrowserRouter([
         element: (
           <WithNavigation activeTab="mealPlanner">
             <MealPlannerPage />
+          </WithNavigation>
+        ),
+      },
+      {
+        path: "/shoppingList",
+        element: (
+          <WithNavigation activeTab="shoppingList">
+            <ShoppingListPage />
           </WithNavigation>
         ),
       },

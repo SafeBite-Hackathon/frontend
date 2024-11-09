@@ -14,6 +14,7 @@ const NavigationMenu: FC<{ activeTab: string }> = ({ activeTab }) => {
       borderColor={"gray.200"}
       backdropFilter="blur(10px)"
       position="absolute"
+      zIndex={10}
       left={0}
       right={0}
       bottom={0}
@@ -47,18 +48,20 @@ const NavigationMenu: FC<{ activeTab: string }> = ({ activeTab }) => {
             />
           </Center>
         </Link>
-        <Center
-          mx={"auto"}
-          w={12}
-          h={12}
-          bg={activeTab === "cart" ? "green.200" : "transparent"}
-          rounded={"full"}
-        >
-          <FaCartShopping
-            size={24}
-            color={activeTab === "cart" ? "#22c55e" : "484C52"}
-          />
-        </Center>
+        <Link to={"/shoppingList"}>
+          <Center
+            mx={"auto"}
+            w={12}
+            h={12}
+            bg={activeTab === "shoppingList" ? "green.200" : "transparent"}
+            rounded={"full"}
+          >
+            <FaCartShopping
+              size={24}
+              color={activeTab === "shoppingList" ? "#22c55e" : "484C52"}
+            />
+          </Center>
+        </Link>
         <Link to={"/profile"}>
           <Center
             mx={"auto"}

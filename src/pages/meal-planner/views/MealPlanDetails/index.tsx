@@ -3,9 +3,9 @@ import { Box, Button, Center, IconButton, Image, Text } from "@chakra-ui/react";
 import { FaArrowLeft } from "react-icons/fa6";
 import MealPlanDescription from "./components/MealPlanDetailsDescription";
 import IncludedRecipes from "./components/IncludedRecipes";
-import { useBoolean } from "usehooks-ts";
 import { Fragment } from "react/jsx-runtime";
 import MealPlanSelected from "./components/MealPlanSelected";
+import { useState } from "react";
 
 interface MealPlanDetailsProps {
   isOpen: boolean;
@@ -13,8 +13,51 @@ interface MealPlanDetailsProps {
 }
 
 const MealPlanDetails = ({ isOpen, onClose }: MealPlanDetailsProps) => {
-  const isSelected = useBoolean(false);
-  const isCreated = useBoolean(false);
+  const [step, setStep] = useState(1);
+
+  const view: Record<number, React.ReactNode> = {
+    1: (
+      <>
+        <Fragment>
+          <MealPlanDescription isSelected={false} />
+          <IncludedRecipes />
+          <Center>
+            <Button
+              onClick={() => setStep(2)}
+              mt={10}
+              colorPalette={"red"}
+              size={"lg"}
+            >
+              <Text fontWeight={"bold"} textTransform={"uppercase"}>
+                Select plan
+              </Text>
+            </Button>
+          </Center>
+        </Fragment>
+      </>
+    ),
+    2: (
+      <>
+        <Fragment>
+          <MealPlanDescription isSelected={true} />
+          <Center>
+            <Button
+              mt={10}
+              colorPalette={"red"}
+              size={"lg"}
+              onClick={() => setStep(3)}
+            >
+              <Text fontWeight={"bold"} textTransform={"uppercase"}>
+                Continue
+              </Text>
+            </Button>
+          </Center>
+        </Fragment>
+      </>
+    ),
+    3: <MealPlanSelected nextStep={() => setStep(4)} />,
+    4: <MealPlanSelected isSaved />,
+  };
 
   return (
     <DrawerView isOpen={isOpen}>
@@ -35,26 +78,7 @@ const MealPlanDetails = ({ isOpen, onClose }: MealPlanDetailsProps) => {
           <Image w={"full"} h={"full"} src="/images/dinner.jpg" />
         </Box>
 
-        {isCreated.value ? (
-          <Fragment>
-            <MealPlanDescription isSelected={isSelected.value} />
-            {!isSelected.value ? <IncludedRecipes /> : null}
-            <Center>
-              <Button
-                onClick={isSelected.setTrue}
-                mt={10}
-                colorPalette={"red"}
-                size={"lg"}
-              >
-                <Text fontWeight={"bold"} textTransform={"uppercase"}>
-                  {isSelected.value ? "Continue" : "Select plan"}
-                </Text>
-              </Button>
-            </Center>
-          </Fragment>
-        ) : (
-          <MealPlanSelected />
-        )}
+        {view[step]}
       </Box>
     </DrawerView>
   );
