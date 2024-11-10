@@ -10,8 +10,16 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { IoIosClose } from "react-icons/io";
+import { Link } from "react-router-dom";
+import { useBoolean } from "usehooks-ts";
 
 const MealPlanShowcase = () => {
+  const isHidden = useBoolean(false);
+
+  if (isHidden.value) {
+    return null;
+  }
+
   return (
     <Card.Root variant={"elevated"} mb={6}>
       <Card.Body>
@@ -20,7 +28,12 @@ const MealPlanShowcase = () => {
             Increse your chances
           </Heading>
 
-          <IconButton size={"sm"} colorPalette={"red"} variant={"subtle"}>
+          <IconButton
+            onClick={isHidden.setTrue}
+            size={"sm"}
+            colorPalette={"red"}
+            variant={"subtle"}
+          >
             <Icon fontSize={"28px"}>
               <IoIosClose />
             </Icon>
@@ -35,11 +48,13 @@ const MealPlanShowcase = () => {
           <Image src="/images/achievement.png" />
         </HStack>
         <Center>
-          <Button colorPalette={"red"} variant={"outline"}>
-            <Text textTransform={"uppercase"} fontWeight={"bold"}>
-              show plans
-            </Text>
-          </Button>
+          <Link to={"/mealPlanner"}>
+            <Button colorPalette={"red"} variant={"outline"}>
+              <Text textTransform={"uppercase"} fontWeight={"bold"}>
+                show plans
+              </Text>
+            </Button>
+          </Link>
         </Center>
       </Card.Body>
     </Card.Root>

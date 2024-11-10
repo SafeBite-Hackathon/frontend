@@ -1,6 +1,7 @@
 import { Avatar, AvatarGroup } from "@/components/ui/avatar";
 import {
   Box,
+  Button,
   Card,
   Center,
   Grid,
@@ -15,9 +16,18 @@ import { FaGear } from "react-icons/fa6";
 import Settings from "./screens/Settings";
 import { Fragment } from "react/jsx-runtime";
 import { useBoolean } from "usehooks-ts";
+import { useNavigate } from "react-router-dom";
+import { useGetMe } from "@/shared/model/getMe";
 
 const ProfilePage = () => {
+  const user = useGetMe();
   const isSettingsOpen = useBoolean(false);
+  const navigate = useNavigate();
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   return (
     <Fragment>
@@ -25,7 +35,7 @@ const ProfilePage = () => {
         isOpen={isSettingsOpen.value}
         onClose={isSettingsOpen.setFalse}
       />
-      <Box px={4} pt={10} pb={0} position={"relative"}>
+      <Box px={4} pt={10} pb={10} position={"relative"}>
         <Box position={"absolute"} right={4} top={4}>
           <IconButton
             onClick={isSettingsOpen.setTrue}
@@ -41,7 +51,7 @@ const ProfilePage = () => {
             <Avatar colorPalette={"green"} size={"2xl"} />
           </AvatarGroup>
 
-          <Heading>Fabian Levy</Heading>
+          <Heading>{user.data?.username}</Heading>
         </VStack>
 
         <Card.Root size={"sm"} variant={"elevated"} mb={12}>
@@ -90,6 +100,14 @@ const ProfilePage = () => {
             <Text fontWeight={"semibold"}>Food preferences</Text>
           </HStack>
         </VStack>
+
+        <Center mt={4}>
+          <Button colorPalette="red" onClick={logout}>
+            <Text textTransform={"uppercase"} fontWeight={"semibold"}>
+              Log out
+            </Text>
+          </Button>
+        </Center>
       </Box>
     </Fragment>
   );

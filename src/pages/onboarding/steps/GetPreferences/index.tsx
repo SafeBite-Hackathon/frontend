@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { usePatchUserPreferences } from "../../model/patchUserPreferences";
 
-const Step4 = () => {
+const GetPreferences = () => {
   const onboardingStore = useOnboardingStore();
   const patchPreference = usePatchUserPreferences();
   const {
@@ -16,6 +16,7 @@ const Step4 = () => {
     isFetching,
   } = useGetTags();
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
+  console.log(tagsResult);
 
   const handleSelectTag = (tag: number) => {
     if (selectedTags.includes(tag)) {
@@ -27,7 +28,7 @@ const Step4 = () => {
 
   const handleSubmit = () => {
     patchPreference.mutate({
-      allegries: selectedTags,
+      preferences: selectedTags,
     });
     onboardingStore.nextStep();
   };
@@ -44,13 +45,13 @@ const Step4 = () => {
         mb={8}
         textAlign={"center"}
       >
-        Any allergies?
+        Any preferences?
       </Text>
       <Box maxH={"50vh"} overflowY={"auto"}>
         <Flex flexWrap={"wrap"} gap={2}>
           {displayedTags?.map((tag) => (
             <Center
-              bg={selectedTags.includes(tag.id) ? "red.500" : "gray.100"}
+              bg={selectedTags.includes(tag.id) ? "green.500" : "gray.100"}
               color={selectedTags.includes(tag.id) ? "white" : "gray.800"}
               py={1}
               px={2}
@@ -102,4 +103,4 @@ const Step4 = () => {
   );
 };
 
-export default Step4;
+export default GetPreferences;

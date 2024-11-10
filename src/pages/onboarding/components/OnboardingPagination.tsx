@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useOnboardingStore } from "../model/useOnboardingStore";
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 7;
 
 const OnboardingPagination = () => {
   const { step } = useOnboardingStore();

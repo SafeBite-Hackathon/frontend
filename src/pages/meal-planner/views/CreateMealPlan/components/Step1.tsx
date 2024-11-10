@@ -15,19 +15,34 @@ import {
   Editable,
   Text,
 } from "@chakra-ui/react";
+import { useState } from "react";
+import { useCreateMealPlanStore } from "../model/createMealPlanStore";
 
 interface Step1Props {
   nextStep: VoidFunction;
 }
 
 const Step1 = ({ nextStep }: Step1Props) => {
+  const [mealPlan, setMealPlan] = useState("");
+  const [mealsPerDay, setMealsPerDay] = useState<string[]>([]);
+  const [mealPlanLength, setMealPlanLength] = useState<string[]>([]);
+
+  const createMealPlanStore = useCreateMealPlanStore();
+
+  const handleContinue = () => {
+    createMealPlanStore.setMealPlanTitle(mealPlan);
+    createMealPlanStore.setMealsPerDay(mealsPerDay[0]);
+    createMealPlanStore.setMealPlanLength(mealPlanLength[0]);
+    nextStep();
+  };
+
   return (
     <Box mt={"-50px"} px={4}>
       <Card.Root size={"sm"} variant={"elevated"} mb={10}>
         <Card.Body>
           <Editable.Root
-            // value={name}
-            // onValueChange={(e) => setName(e.value)}
+            value={mealPlan}
+            onValueChange={(e) => setMealPlan(e.value)}
             placeholder="My meal plan"
             fontWeight={"bold"}
             fontSize={24}
@@ -37,19 +52,15 @@ const Step1 = ({ nextStep }: Step1Props) => {
             <Editable.Input />
           </Editable.Root>
 
-          <Text color={"gray.400"} fontSize={14}>
-            Description
-          </Text>
-          <Text fontWeight={"medium"} mb={4}>
-            Thin and lean. Plan for a "skinny guy" who have a hard time gaining
-            weight.
-          </Text>
-
           <SelectRoot
             size={"lg"}
             colorPalette={"green"}
             collection={amountOfMeals}
             mt={4}
+            value={mealsPerDay}
+            onValueChange={(value) => {
+              setMealsPerDay(value.value);
+            }}
           >
             <SelectLabel>Amount of meals</SelectLabel>
             <SelectTrigger>
@@ -68,6 +79,10 @@ const Step1 = ({ nextStep }: Step1Props) => {
             colorPalette={"green"}
             collection={planlength}
             mt={4}
+            value={mealPlanLength}
+            onValueChange={(value) => {
+              setMealPlanLength(value.value);
+            }}
           >
             <SelectLabel>Plan length</SelectLabel>
             <SelectTrigger>
@@ -85,7 +100,7 @@ const Step1 = ({ nextStep }: Step1Props) => {
       </Card.Root>
 
       <Center>
-        <Button onClick={nextStep} size={"lg"} colorPalette={"red"}>
+        <Button onClick={handleContinue} size={"lg"} colorPalette={"red"}>
           <Text textTransform={"uppercase"} fontWeight={"bold"}>
             continue
           </Text>
@@ -100,10 +115,6 @@ export default Step1;
 const amountOfMeals = createListCollection({
   items: [
     {
-      label: "1 meal",
-      value: "1",
-    },
-    {
       label: "2 meals",
       value: "2",
     },
@@ -111,19 +122,19 @@ const amountOfMeals = createListCollection({
       label: "3 meals",
       value: "3",
     },
+    {
+      label: "4 meals",
+      value: "4",
+    },
+    {
+      label: "5 meals",
+      value: "5",
+    },
   ],
 });
 
 const planlength = createListCollection({
   items: [
-    {
-      label: "1 day",
-      value: "1",
-    },
-    {
-      label: "3 days",
-      value: "3",
-    },
     {
       label: "1 week",
       value: "7",
@@ -135,6 +146,14 @@ const planlength = createListCollection({
     {
       label: "3 weeks",
       value: "21",
+    },
+    {
+      label: "5 weeks",
+      value: "35",
+    },
+    {
+      label: "10 weeks",
+      value: "70",
     },
   ],
 });

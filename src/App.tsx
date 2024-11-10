@@ -6,7 +6,7 @@ import { Container } from "@chakra-ui/react";
 function App() {
   return (
     <Providers>
-      <Container maxW={"620px"}>
+      <Container maxW={"620px"} px={0}>
         <RouterProvider router={router} />
       </Container>
     </Providers>

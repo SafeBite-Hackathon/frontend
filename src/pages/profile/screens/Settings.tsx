@@ -1,4 +1,6 @@
 import DrawerView from "@/components/DrawerView";
+import { DIET_GOAL } from "@/pages/onboarding/constants";
+import { useGetUserPreferences } from "@/shared/model/getUserPreferences";
 import {
   Box,
   Card,
@@ -19,6 +21,8 @@ type Props = {
 };
 
 const Settings: FC<Props> = ({ isOpen, onClose }) => {
+  const userPreferences = useGetUserPreferences();
+
   return (
     <DrawerView
       isOpen={isOpen}
@@ -44,7 +48,7 @@ const Settings: FC<Props> = ({ isOpen, onClose }) => {
               <Box flex={1}>
                 <Text color={"gray.400"}>Your goal</Text>
                 <Text fontWeight={"semibold"} fontSize={24}>
-                  Build muscles
+                  {DIET_GOAL[userPreferences.data?.diet_goal || ""]}
                 </Text>
               </Box>
               <Center>
@@ -59,27 +63,15 @@ const Settings: FC<Props> = ({ isOpen, onClose }) => {
         <Box spaceY={8}>
           <HStack justifyContent={"space-between"}>
             <Text color={"gray.400"}>Starting weight</Text>
-            <Text>79kg on 22/08/2020</Text>
+            <Text>{userPreferences.data?.current_weight}kg on 22/08/2020</Text>
           </HStack>
           <HStack justifyContent={"space-between"}>
             <Text color={"gray.400"}>Current weight</Text>
-            <Text>82 kg</Text>
+            <Text>{userPreferences.data?.current_weight} kg</Text>
           </HStack>
           <HStack justifyContent={"space-between"}>
             <Text color={"gray.400"}>Goal weight</Text>
-            <Text>90 kg</Text>
-          </HStack>
-          <HStack justifyContent={"space-between"}>
-            <Text color={"gray.400"}>Weekly goal</Text>
-            <Text>Gain 0.5 kg</Text>
-          </HStack>
-          <HStack justifyContent={"space-between"}>
-            <Text color={"gray.400"}>Activity level</Text>
-            <Text>Quite active</Text>
-          </HStack>
-          <HStack justifyContent={"space-between"}>
-            <Text color={"gray.400"}>Period</Text>
-            <Text>10 weeks</Text>
+            <Text>{userPreferences.data?.goal_weight} kg</Text>
           </HStack>
         </Box>
       </Box>

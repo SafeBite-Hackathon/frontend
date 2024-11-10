@@ -2,11 +2,17 @@ import { Box, Card, Text } from "@chakra-ui/react";
 import OnboardingPagination from "../../components/OnboardingPagination";
 import { ONBOARDING_GOALS } from "../../constants";
 import { useOnboardingStore } from "../../model/useOnboardingStore";
+import { usePatchUserPreferences } from "../../model/patchUserPreferences";
 
 const Step2 = () => {
   const onboardingStore = useOnboardingStore();
 
+  const patchPreference = usePatchUserPreferences();
+
   const handleClick = (goal: string) => {
+    patchPreference.mutate({
+      diet_goal: goal,
+    });
     onboardingStore.setGoal(goal);
     onboardingStore.nextStep();
   };
@@ -29,7 +35,7 @@ const Step2 = () => {
             key={index}
             size={"sm"}
             variant={"elevated"}
-            onClick={() => handleClick(goal.title)}
+            onClick={() => handleClick(goal.value)}
           >
             <Card.Body gap="2">
               <Card.Title>{goal.title}</Card.Title>

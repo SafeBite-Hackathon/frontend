@@ -6,11 +6,18 @@ import WithNavigation from "@/widgets/NavigationMenu/WithNavigation";
 import ProfilePage from "@/pages/profile";
 import MealPlannerPage from "@/pages/meal-planner";
 import ShoppingListPage from "@/pages/shopping-list";
+import LoginPage from "@/pages/auth/login";
+import RegisterPage from "@/pages/auth/register/register";
+import WithAuth from "@/shared/WithAuth";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <DefaultLayout />,
+    element: (
+      <WithAuth>
+        <DefaultLayout />
+      </WithAuth>
+    ),
     children: [
       {
         index: true,
@@ -47,8 +54,20 @@ export const router = createBrowserRouter([
     ],
   },
   {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
+  },
+  {
     path: "/onboarding",
-    element: <Outlet />,
+    element: (
+      <WithAuth>
+        <Outlet />
+      </WithAuth>
+    ),
     children: [
       {
         index: true,

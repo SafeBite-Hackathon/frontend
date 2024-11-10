@@ -17,19 +17,51 @@ import {
   ProgressCircleValueText,
 } from "@/components/ui/progress-circle";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { useCreateMealPlanStore } from "../model/createMealPlanStore";
+import { format, addDays, startOfWeek } from "date-fns";
+import { useMemo, useState } from "react";
 
 interface Step1Props {
   nextStep: VoidFunction;
 }
 
 const Step2 = ({ nextStep }: Step1Props) => {
+  const [selectedDay, setSelectedDay] = useState("");
+  const createMealPlanStore = useCreateMealPlanStore();
+
+  const totalMeals =
+    +(createMealPlanStore.mealPlanLength || 0) *
+    +(createMealPlanStore.mealsPerDay || 0);
+
+  const getWeeklyRanges = () => {
+    const startDate = startOfWeek(new Date(), { weekStartsOn: 1 }); // Set week to start on Monday
+    const endDate = addDays(
+      startDate,
+      +(createMealPlanStore.mealPlanLength || 1) - 1
+    );
+    return `${format(startDate, "dd.MM.yy")} - ${format(endDate, "dd.MM.yy")}`;
+  };
+
+  const days = useMemo(() => {
+    const mealPlanLength = +(createMealPlanStore.mealPlanLength || 1);
+
+    const daysArray = Array.from({ length: mealPlanLength }, (_, index) => {
+      const date = addDays(new Date(), index);
+      return {
+        short: format(date, "dd.MM EEE"),
+        date: format(date, "dd.MM.yy"),
+      };
+    });
+    return daysArray;
+  }, [createMealPlanStore.mealPlanLength]);
+
   return (
     <Box mt={"-50px"} px={4}>
       <Card.Root size={"sm"} variant={"elevated"} mb={8}>
         <Card.Body>
           <Editable.Root
-            // value={name}
-            // onValueChange={(e) => setName(e.value)}
+            value={createMealPlanStore.mealPlanTitle}
+            onValueChange={(e) => createMealPlanStore.setMealPlanTitle(e.value)}
             placeholder="My meal plan"
             fontWeight={"bold"}
             fontSize={24}
@@ -39,45 +71,40 @@ const Step2 = ({ nextStep }: Step1Props) => {
             <Editable.Input />
           </Editable.Root>
 
-          <Text color={"gray.400"} fontSize={14}>
-            Description
-          </Text>
-          <Text fontWeight={"medium"} mb={4}>
-            Thin and lean. Plan for a "skinny guy" who have a hard time gaining
-            weight.
-          </Text>
-
           <Text fontSize={14} color={"gray.400"}>
             Meals per day
           </Text>
-          <Text mb={4}>3 meals</Text>
+          <Text mb={4}>{createMealPlanStore.mealsPerDay} meals</Text>
           <Text fontSize={14} color={"gray.400"}>
             Length
           </Text>
           <Text mb={4}>
-            1 week <Span color={"gray.400"}>(12.05 - 18.05)</Span>
+            {createMealPlanStore.mealPlanLength} week{" "}
+            <Span color={"gray.400"}>({getWeeklyRanges()})</Span>=
           </Text>
           <Text fontSize={14} color={"gray.400"}>
             Total meals
           </Text>
-          <Text mb={0}>0 meals</Text>
+          <Text mb={0}>{totalMeals} meals</Text>
         </Card.Body>
       </Card.Root>
 
       <HStack gap={4} overflowY={"auto"} mb={8}>
-        {Array.from({ length: 12 }).map((_, index) => (
+        {days.map((day, index) => (
           <Center
             key={index}
             textAlign={"center"}
-            w={"65px"}
-            h={"65px"}
+            w={"70px"}
+            h={"70px"}
             rounded={"full"}
-            bg={index === 0 ? "green.600" : "green.50"}
-            color={index === 0 ? "white" : "gray.400"}
+            bg={day.date === selectedDay ? "green.600" : "green.50"}
+            color={day.date === selectedDay ? "white" : "gray.400"}
             flexShrink={0}
+            transition={"all 0.2s ease"}
+            onClick={() => setSelectedDay(day.date)}
           >
-            <Text fontWeight={"bold"}>
-              12 <br /> Mon
+            <Text maxW={"35px"} fontWeight={"bold"}>
+              {day.short}
             </Text>
           </Center>
         ))}

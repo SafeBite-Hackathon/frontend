@@ -5,6 +5,7 @@ import {
   Icon,
   IconButton,
   Image,
+  Skeleton,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -12,16 +13,20 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { Fragment } from "react/jsx-runtime";
 import { LuHeart } from "react-icons/lu";
 import RecipeDetailsView from "@/views/RecipeDetailsView";
-import { useBoolean } from "usehooks-ts";
+import { useGetRecipes } from "../model/getRecipes";
+import { components } from "@/types/paths";
+import { useState } from "react";
 
 const Recommendations = () => {
-  const isRecipeDetailsOpen = useBoolean(false);
+  const [openedRecipeId, setOpenedRecipeId] = useState<null | number>(null);
+  const { data, isLoading } = useGetRecipes({ page: 1 });
 
   return (
     <Fragment>
       <RecipeDetailsView
-        isOpen={isRecipeDetailsOpen.value}
-        onClose={isRecipeDetailsOpen.setFalse}
+        isOpen={openedRecipeId !== null}
+        onClose={() => setOpenedRecipeId(null)}
+        recipeId={openedRecipeId || undefined}
       />
       <HStack justifyContent={"space-between"} mb={2}>
         <Text fontWeight={"semibold"}>Rich in protein recipes</Text>
@@ -35,8 +40,20 @@ const Recommendations = () => {
       </HStack>
 
       <Grid templateColumns={"repeat(2, 1fr)"} gap={4}>
-        <RecipeCard onClick={isRecipeDetailsOpen.setTrue} />
-        <RecipeCard onClick={isRecipeDetailsOpen.setTrue} />
+        {isLoading ? (
+          <>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <Skeleton h={"132px"} w={"156px"} key={index} />
+            ))}
+          </>
+        ) : null}
+        {data?.results?.map((recipe) => (
+          <RecipeCard
+            recipe={recipe}
+            key={recipe.id}
+            onClick={() => setOpenedRecipeId(recipe.id)}
+          />
+        ))}
       </Grid>
     </Fragment>
   );
@@ -44,13 +61,23 @@ const Recommendations = () => {
 
 export default Recommendations;
 
-export const RecipeCard = (props: { onClick: VoidFunction }) => {
-  const { onClick } = props;
+type Recipe = components["schemas"]["Recipes"];
+
+export const RecipeCard = (props: {
+  onClick: VoidFunction;
+  recipe: Recipe;
+}) => {
+  const { onClick, recipe } = props;
 
   return (
     <VStack gap={2}>
       <Box position={"relative"} w={"full"} onClick={onClick}>
-        <Image rounded={"lg"} src="/images/dinner.jpg" w={"full"} h={"100px"} />
+        <Image
+          rounded={"lg"}
+          src={recipe.images[0].image}
+          w={"full"}
+          h={"100px"}
+        />
         <IconButton
           variant={"subtle"}
           backdropFilter="blur(10px)"
@@ -66,8 +93,8 @@ export const RecipeCard = (props: { onClick: VoidFunction }) => {
         </IconButton>
       </Box>
 
-      <Text color={"green.600"} w="full" textAlign={"left"}>
-        Roasted chiken
+      <Text color={"green.600"} w="full" textAlign={"left"} lineClamp={1}>
+        {recipe.name}
       </Text>
     </VStack>
   );

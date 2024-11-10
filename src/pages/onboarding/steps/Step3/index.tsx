@@ -6,11 +6,16 @@ import groeceriesPng from "../../assets/images/diets/groceries.png";
 import pescatarian from "../../assets/images/diets/pescatarian.png";
 import omlette from "../../assets/images/diets/omelette.png";
 import vegan from "../../assets/images/diets/vegan.png";
+import { usePatchUserPreferences } from "../../model/patchUserPreferences";
 
 const Step3 = () => {
   const onboardingStore = useOnboardingStore();
+  const patchPreference = usePatchUserPreferences();
 
   const handleClick = (goal: string) => {
+    patchPreference.mutate({
+      diet_type: goal,
+    });
     onboardingStore.setDiet(goal);
     onboardingStore.nextStep();
   };
@@ -40,7 +45,7 @@ const Step3 = () => {
             key={index}
             size={"sm"}
             variant={"elevated"}
-            onClick={() => handleClick(diet.title)}
+            onClick={() => handleClick(diet.value)}
           >
             <Card.Body gap="2">
               <Box

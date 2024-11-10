@@ -4,21 +4,30 @@ import SearchFilter from "./components/SearchFilter";
 import Recommendations from "./components/Recommendations";
 import MealPlanProgress from "./components/MealPlanProgress";
 import MealPlanShowcase from "./components/MealPlanShowcase";
+import { useGetMe } from "@/shared/model/getMe";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
+  const user = useGetMe();
+
   return (
     <Box p={4} pb={0}>
       <HStack justifyContent={"space-between"} mb={4}>
         <Box>
           <Text color={"gray.400"}>Welcome,</Text>
-          <Text fontSize={"24px"} fontWeight={"bold"}>
-            Fabian
+          <Text fontSize={"24px"} fontWeight={"bold"} truncate maxW={"250px"}>
+            {user.data?.username}
           </Text>
         </Box>
-
-        <AvatarGroup>
-          <Avatar colorPalette="green" name="Fabian" size={"2xl"} />
-        </AvatarGroup>
+        <Link to={"/profile"}>
+          <AvatarGroup>
+            <Avatar
+              colorPalette="green"
+              name={user.data?.username}
+              size={"2xl"}
+            />
+          </AvatarGroup>
+        </Link>
       </HStack>
 
       <MealPlanProgress />
@@ -31,12 +40,6 @@ const HomePage = () => {
       <SearchFilter />
 
       <Box my={6}>
-        <Recommendations />
-      </Box>
-      <Box mb={6}>
-        <Recommendations />
-      </Box>
-      <Box>
         <Recommendations />
       </Box>
     </Box>
