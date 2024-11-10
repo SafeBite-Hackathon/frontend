@@ -91,7 +91,7 @@ const GetPreferences = () => {
           variant={"subtle"}
           textTransform={"uppercase"}
           fontWeight={"bold"}
-          mb={"60px"}
+          mb={"20px"}
           onClick={handleSubmit}
         >
           Continue
